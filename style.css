@@ -1,0 +1,274 @@
+/* Ryino Cinema Custom Stylesheet */
+
+/* Custom Variables for theme colors */
+:root {
+  --color-bg-dark: #0b0f19;
+  --color-bg-card: #151d30;
+  --color-gold: #f59e0b;
+  --color-gold-hover: #d97706;
+  --color-gold-glow: rgba(245, 158, 11, 0.4);
+  --color-text-white: #ffffff;
+  --color-text-gray: #9ca3af;
+  --color-seat-free: #10b981;
+  --color-seat-booked: #ef4444;
+  --color-seat-selected: #f59e0b;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-white);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+/* Glassmorphism Header */
+.glass-nav {
+  background: rgba(11, 15, 25, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Text Neon Glow */
+.text-glow-gold {
+  text-shadow: 0 0 10px var(--color-gold-glow), 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+/* Card Glow Effect */
+.card-glow {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-glow:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.15), 0 8px 10px -6px rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Interactive Seat Grid & Cinema Screen */
+.cinema-screen {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
+  border-top: 3px solid rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0px 8px 15px rgba(255, 255, 255, 0.2));
+  transform: perspective(300px) rotateX(-15deg);
+  border-radius: 50% / 100% 100% 0 0;
+}
+
+.seat-grid-container {
+  perspective: 800px;
+}
+
+.seat-grid {
+  transform: rotateX(10deg);
+  transform-style: preserve-3d;
+}
+
+.seat {
+  position: relative;
+  aspect-ratio: 1;
+  transition: all 0.2s ease;
+  border-radius: 4px 4px 2px 2px;
+}
+
+.seat::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 1px;
+}
+
+.seat.free {
+  background-color: var(--color-seat-free);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2), 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+.seat.free:hover {
+  transform: scale(1.15) translateY(-2px);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.5);
+  cursor: pointer;
+}
+
+.seat.booked {
+  background-color: var(--color-seat-booked);
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.seat.selected {
+  background-color: var(--color-seat-selected);
+  box-shadow: 0 0 10px var(--color-gold), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  animation: pulse-glow 1.5s infinite alternate;
+}
+.seat.selected:hover {
+  transform: scale(1.15);
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px var(--color-gold), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 15px var(--color-gold), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* Accordion FAQ Styling */
+.faq-trigger:after {
+  content: '+';
+  float: right;
+  font-weight: bold;
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+}
+.faq-active .faq-trigger:after {
+  content: '-';
+  transform: rotate(180deg);
+}
+
+.faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+}
+.faq-active .faq-content {
+  max-height: 200px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Custom Checkbox toggle style */
+.switch-input:checked + .switch-label {
+  background-color: var(--color-gold);
+}
+.switch-input:checked + .switch-label .switch-dot {
+  transform: translateX(100%);
+}
+
+/* Movie Carousel custom bullets */
+.carousel-bullet.active {
+  background-color: var(--color-gold);
+  width: 24px;
+}
+
+/* ================================================
+   SCROLL REVEAL ANIMATION
+   ================================================ */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Stagger delay for grid children */
+.grid > div:nth-child(2) { transition-delay: 0.05s; }
+.grid > div:nth-child(3) { transition-delay: 0.10s; }
+.grid > div:nth-child(4) { transition-delay: 0.15s; }
+.grid > div:nth-child(5) { transition-delay: 0.20s; }
+.grid > div:nth-child(6) { transition-delay: 0.25s; }
+
+/* ================================================
+   SHIMMER LOADING SKELETON
+   ================================================ */
+@keyframes shimmer {
+  0% { background-position: -800px 0; }
+  100% { background-position: 800px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.04) 0%,
+    rgba(255,255,255,0.10) 50%,
+    rgba(255,255,255,0.04) 100%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* ================================================
+   TOAST NOTIFICATION ENTER ANIMATION
+   ================================================ */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ================================================
+   COUNTDOWN TIMER - FLIP EFFECT
+   ================================================ */
+.cd-days, .cd-hours, .cd-mins, .cd-secs {
+  display: block;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.15s ease;
+}
+
+/* ================================================
+   BACK TO TOP BUTTON HOVER
+   ================================================ */
+#back-to-top:hover {
+  background-color: #d97706;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+}
+
+/* ================================================
+   TRAILER MODAL PLAY BUTTON PULSE
+   ================================================ */
+@keyframes playPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.3); }
+  50%       { box-shadow: 0 0 0 16px rgba(245, 158, 11, 0); }
+}
+
+#trailer-content > div:first-child {
+  animation: playPulse 2s ease-in-out infinite;
+}
+
+/* ================================================
+   FORM INPUT FOCUS GLOW
+   ================================================ */
+input:focus, select:focus, textarea:focus {
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.18);
+}
+
+/* ================================================
+   MOBILE MENU SLIDE IN
+   ================================================ */
+#mobile-menu:not(.hidden) {
+  animation: slideDown 0.25s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+

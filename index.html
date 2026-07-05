@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ryino Cinema - Platform Pemesanan Tiket Bioskop Digital & Informasi Film</title>
+  <meta name="description" content="Pesan tiket bioskop online dengan mudah di Ryino Cinema. Katalog film melimpah, sistem denah kursi interaktif real-time, dan kalkulator tarif transparan.">
+
+  <!-- Favicon / App Icon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png">
+  <link rel="shortcut icon" href="assets/favicon.png">
+  <meta name="theme-color" content="#f59e0b">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#0b0f19',
+              card: '#151d30',
+              gold: '#f59e0b',
+              goldHover: '#d97706',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Cek sesi di awal halaman, jika belum login redirect ke auth.html -->
+  <script>
+    const userSession = JSON.parse(localStorage.getItem('ryino_session'));
+    if(!userSession) {
+      window.location.href = 'auth.html';
+    }
+  </script>
+</head>
+<body class="bg-[#0b0f19] text-white selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- 1. HEADER / NAVBAR SECTION -->
+  <header class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <a href="#home" class="flex items-center gap-2 group">
+          <svg class="w-8 h-8 text-amber-500 fill-current group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+            <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+          </svg>
+          <span class="text-2xl font-extrabold tracking-wider bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent font-sans text-glow-gold">
+            RYINO CINEMA
+          </span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="hidden lg:flex items-center gap-8 font-medium">
+          <a href="#home" class="text-slate-300 hover:text-amber-500 transition-colors">Home</a>
+          <a href="#now-showing-sec" class="text-slate-300 hover:text-amber-500 transition-colors">Now Showing</a>
+          <a href="#about" class="text-slate-300 hover:text-amber-500 transition-colors">About Us</a>
+          <a href="#services" class="text-slate-300 hover:text-amber-500 transition-colors">Features</a>
+          <a href="#studios" class="text-slate-300 hover:text-amber-500 transition-colors">Studios</a>
+          <a href="#testimonials" class="text-slate-300 hover:text-amber-500 transition-colors">Reviews</a>
+          <a href="#faq" class="text-slate-300 hover:text-amber-500 transition-colors">FAQ</a>
+          <a href="#contact" class="text-slate-300 hover:text-amber-500 transition-colors">Contact</a>
+        </nav>
+
+        <!-- CTA Action Button & User Profile -->
+        <div class="hidden lg:flex items-center gap-4">
+          <div class="flex items-center gap-2 text-sm">
+            <span class="text-slate-400">Hi,</span>
+            <span id="nav-user-name" class="font-bold text-amber-500">User</span>
+            <button id="btn-logout" class="ml-2 text-slate-500 hover:text-red-500 transition-colors" title="Logout">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+            </button>
+          </div>
+          <a href="#now-showing-sec" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-full shadow-lg shadow-amber-500/25 transition-all transform hover:-translate-y-0.5">
+            Pesan Tiket
+          </a>
+        </div>
+
+        <!-- Hamburger Icon Mobile -->
+        <div class="lg:hidden flex items-center">
+          <button id="mobile-menu-btn" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 focus:outline-none hover:text-amber-500 transition-colors" aria-label="Toggle Menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-[#0c1220]/95 backdrop-blur-lg border-b border-slate-800 absolute top-20 left-0 right-0 px-4 pt-4 pb-6 flex flex-col gap-4 font-semibold text-center shadow-2xl transition-all duration-300">
+      <a href="#home" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">Home</a>
+      <a href="#now-showing-sec" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">Now Showing</a>
+      <a href="#about" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">About Us</a>
+      <a href="#services" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">Features</a>
+      <a href="#studios" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">Studios</a>
+      <a href="#testimonials" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">Reviews</a>
+      <a href="#faq" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">FAQ</a>
+      <a href="#contact" class="py-2.5 text-slate-300 hover:text-amber-500 rounded-lg hover:bg-slate-900/50 transition-all">Contact</a>
+      <hr class="border-slate-800 my-2">
+      <div class="flex items-center justify-center gap-2 text-sm text-amber-500 font-bold">
+        <span>Hi, <span id="mobile-user-name">User</span></span>
+      </div>
+      <button id="btn-logout-mobile" class="py-2.5 text-red-500 hover:text-red-400 rounded-lg hover:bg-slate-900/50 transition-all flex items-center justify-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Logout
+      </button>
+      <a href="#now-showing-sec" class="mt-2 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-bold rounded-xl shadow-lg transition-all mx-2">Pesan Tiket Sekarang</a>
+    </div>
+  </header>
+
+  <!-- 2. HERO SECTION -->
+  <section id="home" class="relative min-h-screen pt-28 flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0b0f19] to-[#0b0f19]">
+    <!-- Background overlay elements -->
+    <div class="absolute inset-0 bg-cover bg-center opacity-[0.05]" style="background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=1600&auto=format&fit=crop&q=80')"></div>
+    <div class="absolute w-[40rem] h-[40rem] bg-amber-500/10 rounded-full blur-[100px] -top-40 -left-40 pointer-events-none"></div>
+    <div class="absolute w-[30rem] h-[30rem] bg-orange-600/10 rounded-full blur-[80px] -bottom-20 -right-20 pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-16 text-center">
+      <div class="max-w-4xl mx-auto space-y-8">
+        <!-- Floating Tag -->
+        <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs md:text-sm font-bold bg-amber-500/10 border border-amber-500/30 text-amber-400 tracking-wider uppercase">
+          🍿 DIGITAL CINEMA SYSTEM v1.0
+        </span>
+
+        <!-- Headline -->
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.15] text-white">
+          Rasakan Sensasi Sinema Terbaik,<br>
+          <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
+            Tanpa Antre, Tanpa Ribet!
+          </span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+          Temukan ratusan film favorit Anda, pilih kursi terbaik secara real-time, dan amankan tiket menonton Anda sekarang juga di Ryino Cinema. Hiburan berkelas untuk semua kalangan!
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <a href="#now-showing-sec" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl shadow-xl shadow-amber-500/20 hover:shadow-amber-500/30 transition-all text-center">
+            Lihat Film Sedang Tayang
+          </a>
+          <a href="https://api.whatsapp.com/send?phone=62895379272080&text=Halo%20Admin%20Ryino%20Cinema%2C%20saya%20ingin%20tanya-tanya%20mengenai%20jadwal%20dan%20sewa%20studio." target="_blank" class="w-full sm:w-auto px-8 py-4 bg-slate-900 border border-slate-800 hover:border-amber-500 hover:text-amber-500 text-slate-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+            <!-- WhatsApp Icon -->
+            <svg class="w-5 h-5 fill-current text-[#25D366]" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.97C16.638 1.97 14.162.943 11.543.943c-5.445 0-9.87 4.373-9.874 9.8.001 2.012.528 3.983 1.529 5.727L2.176 20.2l3.966-1.026c.168.093.336.183.505.28z"/>
+            </svg>
+            Hubungi Admin / Pesan via WA
+          </a>
+        </div>
+
+        <!-- 4 Key Points Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12 border-t border-slate-800/60 max-w-5xl mx-auto">
+          <div class="bg-slate-900/40 backdrop-blur border border-slate-800/40 p-4 rounded-2xl flex flex-col items-center">
+            <span class="text-3xl mb-2">🍿</span>
+            <h3 class="font-bold text-white text-sm">Pilihan Film Melimpah</h3>
+            <p class="text-xs text-slate-400 mt-1">Box office, lokal, & indie</p>
+          </div>
+          <div class="bg-slate-900/40 backdrop-blur border border-slate-800/40 p-4 rounded-2xl flex flex-col items-center">
+            <span class="text-3xl mb-2">💺</span>
+            <h3 class="font-bold text-white text-sm">Pilih Kursi Bebas</h3>
+            <p class="text-xs text-slate-400 mt-1">Visual seat layout interaktif</p>
+          </div>
+          <div class="bg-slate-900/40 backdrop-blur border border-slate-800/40 p-4 rounded-2xl flex flex-col items-center">
+            <span class="text-3xl mb-2">💰</span>
+            <h3 class="font-bold text-white text-sm">Harga Jujur</h3>
+            <p class="text-xs text-slate-400 mt-1">Tanpa tarif tersembunyi</p>
+          </div>
+          <div class="bg-slate-900/40 backdrop-blur border border-slate-800/40 p-4 rounded-2xl flex flex-col items-center">
+            <span class="text-3xl mb-2">⚡</span>
+            <h3 class="font-bold text-white text-sm">Instan & Praktis</h3>
+            <p class="text-xs text-slate-400 mt-1">E-Tiket langsung ke WA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ABOUT SECTION -->
+  <section id="about" class="py-24 bg-slate-950 border-t border-b border-slate-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Visual/Left Column -->
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl opacity-10 blur-xl"></div>
+          <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80" alt="Ryino Cinema Experience" class="rounded-2xl shadow-2xl relative z-10 border border-slate-800 object-cover w-full h-[400px]">
+          <!-- Floating mini card -->
+          <div class="absolute -bottom-6 -right-6 bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl z-20 flex items-center gap-4">
+            <div class="p-3 bg-amber-500/10 rounded-xl text-amber-500">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400">Jaminan Transaksi</p>
+              <h4 class="font-bold text-white">100% Aman & Valid</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description/Right Column -->
+        <div class="space-y-8">
+          <div class="space-y-4">
+            <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">TENTANG BRAND</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white">
+              Demokratisasi Akses Hiburan Sinema Untuk Semua
+            </h2>
+            <p class="text-slate-400 leading-relaxed">
+              Ryino Cinema lahir dari kegelisahan masyarakat yang sering kehabisan tiket, kecewa dengan variasi film yang monoton, dan kesulitan memilih tempat duduk idaman di bioskop konvensional. 
+            </p>
+            <p class="text-slate-400 leading-relaxed">
+              Kami hadir meruntuhkan batasan tersebut melalui platform digital terintegrasi yang mempertemukan kenyamanan teknologi modern dengan inklusivitas sosial. Semua orang—dari kalangan mana pun—berhak menikmati hiburan film dengan standar pelayanan terbaik dan transparansi harga mutlak tanpa antrean fisik.
+            </p>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-2 gap-6 pt-4">
+            <div class="border-l-4 border-amber-500 pl-4">
+              <span class="text-3xl md:text-4xl font-extrabold text-white">50+</span>
+              <p class="text-xs md:text-sm text-slate-400 mt-1">Film Diupdate Per Bulan</p>
+            </div>
+            <div class="border-l-4 border-amber-500 pl-4">
+              <span class="text-3xl md:text-4xl font-extrabold text-white">12+</span>
+              <p class="text-xs md:text-sm text-slate-400 mt-1">Studio Dolby Atmos</p>
+            </div>
+            <div class="border-l-4 border-amber-500 pl-4">
+              <span class="text-3xl md:text-4xl font-extrabold text-white">250K+</span>
+              <p class="text-xs md:text-sm text-slate-400 mt-1">Tiket Online Terjual</p>
+            </div>
+            <div class="border-l-4 border-amber-500 pl-4">
+              <span class="text-3xl md:text-4xl font-extrabold text-white">98%</span>
+              <p class="text-xs md:text-sm text-slate-400 mt-1">Tingkat Ulasan Positif</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVIE CATALOG SECTION (Now Showing & Upcoming) -->
+  <section id="now-showing-sec" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center space-y-4 mb-12">
+      <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">KATALOG BIOSKOP</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">Jelajahi Film Favorit Anda</h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">
+        Pilih film yang sedang tayang hari ini untuk memilih tempat duduk, atau intip film yang akan segera hadir di studio kami.
+      </p>
+
+      <!-- Tabs Navigation -->
+      <div class="flex items-center justify-center gap-4 pt-6">
+        <button id="tab-now-showing" class="px-6 py-3 bg-amber-500 text-slate-950 rounded-full font-bold shadow-lg shadow-amber-500/20 transition-all cursor-pointer">
+          Sedang Tayang (Now Showing)
+        </button>
+        <button id="tab-upcoming" class="px-6 py-3 bg-slate-800 text-slate-400 hover:text-white rounded-full font-bold transition-all cursor-pointer">
+          Akan Datang (Upcoming)
+        </button>
+      </div>
+    </div>
+
+    <!-- Movie Card Grid -->
+    <div id="movie-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <!-- Cards rendered dynamically via script.js -->
+    </div>
+  </section>
+
+  <!-- DETAILED BOOKING MODAL -->
+  <div id="booking-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 max-w-4xl w-full rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col md:flex-row">
+      <!-- Close Button -->
+      <button id="modal-close" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/60 border border-slate-800 text-slate-400 hover:text-white transition-all" aria-label="Tutup">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Modal Image / Left -->
+      <div class="md:w-2/5 relative bg-slate-950 aspect-[2/3] md:aspect-auto">
+        <img id="modal-poster" src="" alt="" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Modal Info / Right -->
+      <div class="md:w-3/5 p-6 md:p-8 overflow-y-auto flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center gap-2">
+            <span id="modal-rating" class="px-2 py-0.5 rounded text-xs font-bold bg-amber-500 text-slate-950"></span>
+            <span id="modal-genre" class="text-xs text-amber-500 font-semibold tracking-wide uppercase"></span>
+            <span class="text-slate-500 text-xs">|</span>
+            <span id="modal-duration" class="text-xs text-slate-400"></span>
+          </div>
+
+          <h2 id="modal-title" class="text-2xl md:text-3xl font-extrabold text-white leading-tight"></h2>
+
+          <div class="space-y-1">
+            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sinopsis</h4>
+            <p id="modal-synopsis" class="text-sm text-slate-300 leading-relaxed"></p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 pt-2 text-xs border-t border-slate-800">
+            <div>
+              <span class="text-slate-500 block">SUTRADARA</span>
+              <span id="modal-director" class="font-bold text-white"></span>
+            </div>
+            <div>
+              <span class="text-slate-500 block">PEMERAN UTAMA</span>
+              <span id="modal-cast" class="font-bold text-white"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-800 mt-6">
+          <h3 id="showtime-title" class="text-sm font-bold text-white mb-3 tracking-wider uppercase">PILIH JAM TAYANG HARI INI:</h3>
+          <div id="showtime-container" class="flex flex-wrap gap-2">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Trailer Button -->
+        <div class="pt-4">
+          <button id="btn-watch-trailer" class="w-full py-3 flex items-center justify-center gap-2 border border-slate-700 rounded-xl text-slate-400 hover:border-red-500 hover:text-red-400 transition-all text-sm font-semibold">
+            <svg class="w-5 h-5 fill-current text-red-500" viewBox="0 0 24 24"><path d="M23.498 6.163c-.274-1.026-1.082-1.833-2.108-2.107C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.39.511C1.584 4.33.776 5.137.502 6.163.01 8.036 0 12 0 12s.01 3.964.492 5.837c.274 1.026 1.082 1.833 2.108 2.107C4.483 20.455 12 20.455 12 20.455s7.517 0 9.39-.511c1.026-.274 1.834-1.08 2.108-2.107.482-1.873.492-5.837.492-5.837s-.01-3.964-.492-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Lihat Trailer Film
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE SEAT SELECTION SHOWCASE (Revealable) -->
+  <section id="seat-selection-section" class="py-24 bg-slate-900/40 border-t border-b border-slate-800/60 hidden">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-2 mb-10">
+        <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">LANGKAH 1: PILIH KURSI ANDA</span>
+        <h2 id="seat-movie-title" class="text-2xl md:text-3xl font-extrabold text-white leading-tight"></h2>
+        <p class="text-slate-400 text-sm">
+          Jadwal Terpilih: <span id="seat-showtime" class="text-amber-500 font-semibold"></span>
+        </p>
+      </div>
+
+      <!-- Live Seat Layout Box -->
+      <div class="bg-slate-950 border border-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl relative">
+        <!-- The Cinema Screen -->
+        <div class="w-4/5 mx-auto mb-16 text-center">
+          <div class="cinema-screen h-5 w-full mb-2"></div>
+          <span class="text-xs text-slate-500 uppercase tracking-[0.3em] font-bold">Layar Proyektor Bioskop</span>
+        </div>
+
+        <!-- The Seat Matrix Grid -->
+        <div class="seat-grid-container max-w-xl mx-auto overflow-x-auto">
+          <div id="seat-grid" class="seat-grid grid grid-cols-13 gap-1.5 md:gap-2.5 min-w-[340px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));">
+            <!-- Matrix: Row A-K, Column 1-10 with gap at col 6. Build in script.js -->
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex items-center justify-center gap-6 mt-12 pt-6 border-t border-slate-900 text-xs md:text-sm">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-emerald-500 rounded"></div>
+            <span class="text-slate-400 font-medium">Tersedia</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-red-500 opacity-60 rounded"></div>
+            <span class="text-slate-400 font-medium">Dipesan</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-amber-500 rounded shadow-md shadow-amber-500/30"></div>
+            <span class="text-slate-400 font-medium">Pilihan Anda</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Controls & Surcharge Selection -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <!-- Options Surcharge -->
+        <div class="bg-slate-900 border border-slate-800/80 p-5 rounded-2xl space-y-4">
+          <h4 class="font-bold text-white text-sm tracking-wider uppercase">Konfigurasi Tarif & Tambahan:</h4>
+          
+          <!-- Day Surgharge Selection -->
+          <div class="space-y-2">
+            <span class="text-xs text-slate-400 font-medium block">Hari Menonton:</span>
+            <div class="flex bg-slate-950 p-1.5 rounded-xl border border-slate-800 gap-1">
+              <button id="day-weekday" class="flex-1 py-2 px-3 bg-amber-500 text-slate-950 font-bold text-center text-xs md:text-sm rounded-lg transition-all cursor-pointer">
+                Weekdays (Sen-Kam)
+              </button>
+              <button id="day-weekend" class="flex-1 py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-400 font-bold text-center text-xs md:text-sm rounded-lg transition-all cursor-pointer">
+                Weekends (+Rp15rb)
+              </button>
+            </div>
+          </div>
+
+          <!-- Ticket Quantity (Tariff Section) -->
+          <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <span class="text-xs md:text-sm text-slate-400 font-medium">Jumlah Tiket:</span>
+            <div class="flex items-center gap-4">
+              <button id="btn-minus-ticket" class="w-8 h-8 rounded bg-slate-800 text-white font-bold hover:bg-slate-700 transition-colors flex items-center justify-center">-</button>
+              <span id="display-ticket-count" class="font-bold text-white text-sm">0</span>
+              <button id="btn-plus-ticket" class="w-8 h-8 rounded bg-slate-800 text-white font-bold hover:bg-slate-700 transition-colors flex items-center justify-center">+</button>
+            </div>
+          </div>
+
+          <!-- Snack Add-on -->
+          <div class="flex items-center justify-between p-3 bg-slate-950/60 rounded-xl border border-slate-800/40">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🥤</span>
+              <div>
+                <h5 class="text-xs md:text-sm font-bold text-white">Combo Popcorn + Minum</h5>
+                <p class="text-[10px] md:text-xs text-slate-400">+Rp 30.000 / tiket</p>
+              </div>
+            </div>
+            <div class="relative inline-flex items-center">
+              <input type="checkbox" id="snack-combo" class="sr-only peer switch-input">
+              <label for="snack-combo" class="w-10 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500 cursor-pointer switch-label"></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Receipt & Total Pricing Display -->
+        <div class="bg-slate-900 border border-slate-800/80 p-5 rounded-2xl flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5 text-sm">
+            <div class="flex items-center justify-between text-slate-400">
+              <span>Kursi Terpilih:</span>
+              <span id="selected-seats-text" class="font-bold text-white">-</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-400">
+              <span>Tarif Studio Dasar:</span>
+              <span id="ticket-base-price" class="font-semibold text-white">Rp 0</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-400">
+              <span>Biaya Hari (Surcharge):</span>
+              <span id="ticket-day-price" class="font-semibold text-white">Rp 0</span>
+            </div>
+            <div class="border-t border-slate-800/60 pt-2.5 flex items-center justify-between font-bold text-base text-white">
+              <span>Total Harga (<span id="total-seats-count">0</span> Tiket):</span>
+              <span id="total-price" class="text-xl text-amber-500 text-glow-gold">Rp 0</span>
+            </div>
+          </div>
+
+          <button id="btn-confirm-seats" disabled class="w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl cursor-not-allowed text-center transition-all">
+            Konfirmasi Kursi & Isi Form Pemesanan
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SERVICES / FEATURES SECTION -->
+  <section id="services" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center space-y-4 mb-16">
+      <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">FITUR UTAMA</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">Pengalaman Menonton Pintar</h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">
+        6 pilar layanan unggulan Ryino Cinema yang dirancang untuk mengatasi antrean panjang dan kerumitan loket konvensional.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Feature 1 -->
+      <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 hover:border-amber-500/50 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-2xl">
+          🎬
+        </div>
+        <h3 class="font-bold text-lg text-white">Massive Movie Catalog</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Katalog film lokal, internasional box office, hingga karya indie terpopuler yang diperbarui setiap minggu secara berkala.
+        </p>
+        <a href="#now-showing-sec" class="text-xs text-amber-500 hover:text-amber-400 font-semibold inline-flex items-center gap-1">
+          Explore Katalog &rarr;
+        </a>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 hover:border-amber-500/50 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-2xl">
+          💺
+        </div>
+        <h3 class="font-bold text-lg text-white">Live Seat Selector</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Peta denah kursi bioskop interaktif visual real-time. Hilangkan spekulasi posisi duduk dan amankan kursi tengah terfavorit Anda.
+        </p>
+        <a href="#now-showing-sec" class="text-xs text-amber-500 hover:text-amber-400 font-semibold inline-flex items-center gap-1">
+          Lihat Denah Kursi &rarr;
+        </a>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 hover:border-amber-500/50 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-2xl">
+          💰
+        </div>
+        <h3 class="font-bold text-lg text-white">Dynamic Pricing Engine</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Perhitungan tarif otomatis transparan menyesuaikan tipe studio, hari penayangan (weekdays/weekends), dan add-on snack tanpa biaya admin.
+        </p>
+        <a href="#studios" class="text-xs text-amber-500 hover:text-amber-400 font-semibold inline-flex items-center gap-1">
+          Cek Estimasi Harga &rarr;
+        </a>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 hover:border-amber-500/50 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-2xl">
+          ⚡
+        </div>
+        <h3 class="font-bold text-lg text-white">WhatsApp Ticket Delivery</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Kode booking dan e-tiket dikirim langsung ke nomor WhatsApp pribadi dalam bentuk QR Code. Praktis tanpa akun email rumit.
+        </p>
+        <a href="#contact" class="text-xs text-amber-500 hover:text-amber-400 font-semibold inline-flex items-center gap-1">
+          Pelajari Alur Kirim &rarr;
+        </a>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 hover:border-amber-500/50 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-2xl">
+          🕒
+        </div>
+        <h3 class="font-bold text-lg text-white">Real-time Schedule Sync</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Sinkronisasi jadwal tayang terakreditasi otomatis langsung dari proyektor studio bioskop fisik, menghindari keterlambatan.
+        </p>
+        <a href="#now-showing-sec" class="text-xs text-amber-500 hover:text-amber-400 font-semibold inline-flex items-center gap-1">
+          Lihat Jam Tayang &rarr;
+        </a>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 hover:border-amber-500/50 transition-colors">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-2xl">
+          💬
+        </div>
+        <h3 class="font-bold text-lg text-white">One-Click CS Support</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Bantuan cepat admin Customer Service via live chat jika terjadi kendala pemesanan. Memberikan rasa aman penuh bagi kalangan awam digital.
+        </p>
+        <a href="https://api.whatsapp.com/send?phone=62895379272080&text=Halo%20Admin%20Ryino%20Cinema%2C%20saya%20butuh%20bantuan%20CS%20mengenai%20pemesanan%20tiket." target="_blank" class="text-xs text-amber-500 hover:text-amber-400 font-semibold inline-flex items-center gap-1">
+          Hubungi Bantuan &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. PORTFOLIO / PRODUCT SECTION (Kelas Studio Card) -->
+  <section id="studios" class="py-24 bg-slate-950 border-t border-b border-slate-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-4 mb-16">
+        <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">KELAS STUDIO</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Pilih Paket Pengalaman Menonton Anda</h2>
+        <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">
+          Sesuaikan kenyamanan audio-visual dan budget rekreasi Anda dengan pilihan kelas studio inovatif kami.
+        </p>
+      </div>
+
+      <!-- Studio Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Economy/Reguler Card -->
+        <div class="card-glow bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-8 relative overflow-hidden group">
+          <div class="space-y-4">
+            <span class="px-3 py-1 text-[10px] font-bold tracking-wider text-slate-400 bg-slate-800 rounded uppercase">Reguler Class</span>
+            <h3 class="font-extrabold text-xl text-white group-hover:text-amber-500 transition-colors">Ekonomi (Reguler Studio)</h3>
+            <p class="text-slate-400 text-sm">
+              Layar lebar tajam tajam dengan konfigurasi audio Dolby Digital 7.1 yang jernih serta kursi ergonomis nyaman.
+            </p>
+            <div class="text-slate-300 font-semibold text-2xl pt-2">
+              Rp 35.000<span class="text-xs text-slate-500 font-medium"> / Kursi</span>
+            </div>
+            <ul class="text-xs text-slate-400 space-y-2 pt-4 border-t border-slate-800">
+              <li class="flex items-center gap-2">✓ Audio Dolby Digital 7.1</li>
+              <li class="flex items-center gap-2">✓ Kursi Ergonomis Lembut</li>
+              <li class="flex items-center gap-2">✓ Layar Lebar Standard 4K</li>
+            </ul>
+          </div>
+          <a href="#now-showing-sec" class="w-full py-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-center text-xs md:text-sm text-slate-200 transition-colors block">
+            Pesan Kelas Reguler
+          </a>
+        </div>
+
+        <!-- Premium/Prime Card -->
+        <div class="card-glow bg-slate-900 border-2 border-blue-500/20 rounded-2xl p-6 flex flex-col justify-between space-y-8 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 bg-blue-600 text-white font-bold text-[9px] tracking-widest px-3 py-1 rounded-bl uppercase">MODERN AUDIO</div>
+          <div class="space-y-4">
+            <span class="px-3 py-1 text-[10px] font-bold tracking-wider text-blue-400 bg-blue-950 rounded uppercase">Prime Studio</span>
+            <h3 class="font-extrabold text-xl text-white group-hover:text-amber-500 transition-colors">Premium (Prime Studio)</h3>
+            <p class="text-slate-400 text-sm">
+              Teknologi audio spasial Dolby Atmos 3D, ruang kaki lebih lapang, dan kursi bersandar semi-reclining leather premium.
+            </p>
+            <div class="text-blue-400 font-semibold text-2xl pt-2">
+              Rp 50.000<span class="text-xs text-slate-500 font-medium"> / Kursi</span>
+            </div>
+            <ul class="text-xs text-slate-400 space-y-2 pt-4 border-t border-slate-800">
+              <li class="flex items-center gap-2">✓ Audio Spasial Dolby Atmos</li>
+              <li class="flex items-center gap-2">✓ Kursi Semi-Reclining Leather</li>
+              <li class="flex items-center gap-2">✓ Ruang Kaki Lebih Lapang</li>
+            </ul>
+          </div>
+          <a href="#now-showing-sec" class="w-full py-3 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 font-bold rounded-xl text-center text-xs md:text-sm transition-all block">
+            Pesan Kelas Premium
+          </a>
+        </div>
+
+        <!-- VIP/Velvet Card (Gold themed) -->
+        <div class="card-glow bg-slate-900 border-2 border-amber-500/40 rounded-2xl p-6 flex flex-col justify-between space-y-8 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 font-extrabold text-[9px] tracking-widest px-3 py-1 rounded-bl uppercase">LUXURY CHOICE</div>
+          <div class="space-y-4">
+            <span class="px-3 py-1 text-[10px] font-bold tracking-wider text-amber-400 bg-amber-950 rounded uppercase">Velvet Suite</span>
+            <h3 class="font-extrabold text-xl text-glow-gold text-amber-500">Velvet/Suite (VIP Luxury)</h3>
+            <p class="text-slate-400 text-sm">
+              Reclining Bed Seats eksklusif berpasangan, selimut hangat, bantal sutra, dan tombol pemanggil pelayan internal di dalam bioskop.
+            </p>
+            <div class="text-amber-500 font-bold text-2xl pt-2 text-glow-gold">
+              Rp 100.000<span class="text-xs text-slate-500 font-medium"> / Kursi</span>
+            </div>
+            <ul class="text-xs text-slate-400 space-y-2 pt-4 border-t border-slate-850">
+              <li class="flex items-center gap-2">✓ Full Reclining Bed Seats</li>
+              <li class="flex items-center gap-2">✓ Selimut & Bantal Premium</li>
+              <li class="flex items-center gap-2">✓ Butler Service / Pelayan Pribadi</li>
+            </ul>
+          </div>
+          <a href="#now-showing-sec" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl text-center text-xs md:text-sm transition-all block shadow-lg shadow-amber-500/10">
+            Booking VIP Suite
+          </a>
+        </div>
+
+        <!-- Custom Private Rent -->
+        <div class="card-glow bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-8 relative overflow-hidden group">
+          <div class="space-y-4">
+            <span class="px-3 py-1 text-[10px] font-bold tracking-wider text-slate-400 bg-slate-800 rounded uppercase">Private Cinema</span>
+            <h3 class="font-extrabold text-xl text-white group-hover:text-amber-500 transition-colors">Kelas Custom (Rent Private)</h3>
+            <p class="text-slate-400 text-sm">
+              Sewa satu studio penuh secara privat untuk nobar komunitas, kumpul keluarga besar, ulang tahun, atau presentasi korporat.
+            </p>
+            <div class="text-slate-300 font-semibold text-2xl pt-2">
+              Hubungi CS<span class="text-xs text-slate-500 font-medium"> / Booking</span>
+            </div>
+            <ul class="text-xs text-slate-400 space-y-2 pt-4 border-t border-slate-800">
+              <li class="flex items-center gap-2">✓ Kontrol Jadwal & Film Bebas</li>
+              <li class="flex items-center gap-2">✓ Kapasitas hingga 50 Orang</li>
+              <li class="flex items-center gap-2">✓ Opsi F&B Kustom Khusus</li>
+            </ul>
+          </div>
+          <a href="#contact" onclick="document.getElementById('form-service').value='Sewa Studio Privat';" class="w-full py-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-center text-xs md:text-sm text-slate-200 transition-colors block">
+            Konsultasi Sewa Studio
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TESTIMONIAL SECTION -->
+  <section id="testimonials" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center space-y-4 mb-16">
+      <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">REVIEW PENONTON</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">Apa Kata Pecinta Film?</h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">
+        Kisah kepuasan nyata penonton yang telah merasakan kemudahan sistem pemesanan online tanpa antre Ryino Cinema.
+      </p>
+    </div>
+
+    <!-- Review Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Testi 1 -->
+      <div class="p-6 bg-slate-900/60 border border-slate-800 rounded-2xl flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <!-- Stars -->
+          <div class="flex text-amber-500 gap-1 text-sm">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed italic">
+            "Biasanya kalau mau nonton film box office di hari pertama harus antre sejam di loket dan sering kehabisan kursi tengah. Lewat web Ryino Cinema, saya bisa beli tiket sambil rebahan di kosan jam 12 malam, pas datang ke bioskop tinggal scan kode WA. Dapat kursi baris J favorit pula! Mantap banget!"
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+          <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-amber-500">AW</div>
+          <div>
+            <h4 class="font-bold text-white text-sm">Andi Wijaya</h4>
+            <span class="text-xs text-slate-500">Mahasiswa Universitas Terbuka</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testi 2 -->
+      <div class="p-6 bg-slate-900/60 border border-slate-800 rounded-2xl flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <!-- Stars -->
+          <div class="flex text-amber-500 gap-1 text-sm">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed italic">
+            "Sangat terbantu waktu bawa anak-anak nonton film animasi saat akhir pekan. Dari rumah sudah kelihatan denah kursinya yang kosong mana saja, jadi bisa langsung borong 5 kursi jajar rapi. Harganya juga jujur tidak ditambah-tambah biaya aneh. Website-nya gampang dimengerti bahkan buat saya yang gaptek."
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+          <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-amber-500">CL</div>
+          <div>
+            <h4 class="font-bold text-white text-sm">Citra Lestari</h4>
+            <span class="text-xs text-slate-500">Ibu Rumah Tangga (Family User)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testi 3 -->
+      <div class="p-6 bg-slate-900/60 border border-slate-800 rounded-2xl flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <!-- Stars -->
+          <div class="flex text-amber-500 gap-1 text-sm">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed italic">
+            "Sistem kalkulasi harga di website ini sangat konsisten dan responsif. Info jadwal tayang sinkron dengan yang ada di bioskop fisik. Fitur VIP Suite booking-nya keren, transaksinya cepat diakses lewat HP Android jadul saya sekalipun tanpa lag. Tailwind CSS-nya dioptimalkan dengan baik!"
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+          <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-amber-500">RS</div>
+          <div>
+            <h4 class="font-bold text-white text-sm">Raymond Sitorus</h4>
+            <span class="text-xs text-slate-500">Karyawan Swasta / Profesional IT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FAQ SECTION -->
+  <section id="faq" class="py-24 bg-slate-950 border-t border-b border-slate-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center space-y-4 mb-16">
+        <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">FAQ CENTER</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Ada Pertanyaan?</h2>
+        <p class="text-slate-400 text-sm md:text-base">
+          Temukan jawaban atas keraguan umum Anda seputar sistem pemesanan online bioskop Ryino Cinema.
+        </p>
+      </div>
+
+      <!-- Accordion Grid -->
+      <div class="space-y-4">
+        <!-- FAQ 1 -->
+        <div class="faq-item bg-slate-900 border border-slate-800 rounded-xl px-6 py-4 cursor-pointer">
+          <button class="faq-trigger w-full text-left font-bold text-white hover:text-amber-500 transition-colors flex items-center justify-between text-sm md:text-base">
+            Apakah pilihan film di Ryino Cinema selalu diperbarui?
+          </button>
+          <div class="faq-content text-slate-400 text-xs md:text-sm leading-relaxed">
+            Ya, katalog film kami diperbarui secara berkala setiap minggu mengikuti rilis domestik maupun internasional, sehingga Anda akan selalu mendapatkan variasi film yang melimpah.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item bg-slate-900 border border-slate-800 rounded-xl px-6 py-4 cursor-pointer">
+          <button class="faq-trigger w-full text-left font-bold text-white hover:text-amber-500 transition-colors flex items-center justify-between text-sm md:text-base">
+            Kapan saya bisa mengakses dan memilih posisi tempat duduk?
+          </button>
+          <div class="faq-content text-slate-400 text-xs md:text-sm leading-relaxed">
+            Akses peta denah tempat duduk interaktif akan terbuka secara otomatis di layar Anda sesaat setelah Anda memilih film dan menentukan jumlah tiket yang ingin dibeli di Now Showing section.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item bg-slate-900 border border-slate-800 rounded-xl px-6 py-4 cursor-pointer">
+          <button class="faq-trigger w-full text-left font-bold text-white hover:text-amber-500 transition-colors flex items-center justify-between text-sm md:text-base">
+            Bagaimana sistem perhitungan harga tiket di website ini?
+          </button>
+          <div class="faq-content text-slate-400 text-xs md:text-sm leading-relaxed">
+            Harga tiket dihitung secara otomatis dan transparan oleh sistem kami berdasarkan kombinasi jenis studio yang Anda pilih serta hari penayangan film (tarif Weekdays Senin-Kamis lebih murah dibanding Weekends Jumat-Minggu/Hari Libur).
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item bg-slate-900 border border-slate-800 rounded-xl px-6 py-4 cursor-pointer">
+          <button class="faq-trigger w-full text-left font-bold text-white hover:text-amber-500 transition-colors flex items-center justify-between text-sm md:text-base">
+            Apakah saya perlu mencetak tiket fisik sebelum masuk ke dalam studio bioskop?
+          </button>
+          <div class="faq-content text-slate-400 text-xs md:text-sm leading-relaxed">
+            Tidak perlu. Setelah pembayaran sukses di WhatsApp admin, e-tiket resmi berisi QR Code unik akan langsung dikirim ke WhatsApp Anda. Anda cukup menunjukkan layar HP Anda ke petugas bioskop untuk discan.
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item bg-slate-900 border border-slate-800 rounded-xl px-6 py-4 cursor-pointer">
+          <button class="faq-trigger w-full text-left font-bold text-white hover:text-amber-500 transition-colors flex items-center justify-between text-sm md:text-base">
+            Bagaimana jika saya salah memilih jam tayang atau ingin membatalkan pesanan?
+          </button>
+          <div class="faq-content text-slate-400 text-xs md:text-sm leading-relaxed">
+            Sesuai dengan kebijakan layanan kami, tiket yang sudah dibeli dan kursinya terkunci tidak dapat dibatalkan atau diuangkan kembali. Mohon pastikan kembali pilihan jam dan judul film sebelum menekan tombol konfirmasi.
+          </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq-item bg-slate-900 border border-slate-800 rounded-xl px-6 py-4 cursor-pointer">
+          <button class="faq-trigger w-full text-left font-bold text-white hover:text-amber-500 transition-colors flex items-center justify-between text-sm md:text-base">
+            Ke mana saya harus melapor jika e-tiket belum masuk ke WhatsApp saya?
+          </button>
+          <div class="faq-content text-slate-400 text-xs md:text-sm leading-relaxed">
+            Jangan khawatir! Anda bisa langsung menekan tombol "Hubungi Admin" di pojok kanan navbar, atau langsung kirim pesan melalui WhatsApp CS di footer untuk bantuan instan dalam waktu 5 menit.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CALL TO ACTION (CTA) SECTION -->
+  <section class="py-20 relative overflow-hidden bg-[#111827]">
+    <!-- Radial Amber Glow -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
+    
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
+        Jangan Sampai Kehabisan Kursi Terbaik!<br>
+        <span class="text-amber-500 text-glow-gold">Amankan Tiket Menonton Anda Sekarang!</span>
+      </h2>
+      <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+        Ribuan pecinta film telah memesan tiket mereka hari ini secara online. Pilih film favoritmu, jelajahi denah tempat duduk yang tersedia, dan nikmati liburan sinematik tak terlupakan bersama Ryino Cinema.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+        <a href="#now-showing-sec" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl shadow-xl shadow-amber-500/25 transition-all text-center">
+          Pilih Film & Mulai Booking
+        </a>
+        <a href="#studios" class="w-full sm:w-auto px-8 py-3.5 bg-slate-900 border border-slate-800 text-slate-300 font-bold rounded-xl hover:border-amber-500 hover:text-amber-500 transition-all text-center">
+          Lihat Daftar Promo Minggu Ini
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CONTACT SECTION -->
+  <section id="contact" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+    <div class="space-y-8 max-w-3xl">
+      <div class="space-y-4">
+        <span class="text-amber-500 font-bold text-sm uppercase tracking-wider">KONTAK & LAYANAN</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Hubungi Admin CS Bioskop</h2>
+        <p class="text-slate-400 leading-relaxed text-sm md:text-base">
+          Butuh bantuan manual? Atau ingin mengajukan kerjasama, komplain e-tiket, dan sewa studio privat? Silakan langsung hubungi WhatsApp Admin kami. Tim CS kami siap melayani Anda.
+        </p>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+        <a href="https://api.whatsapp.com/send?phone=62895379272080&text=Halo%20Admin%20Ryino%20Cinema!" target="_blank" class="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-2">
+          <!-- WhatsApp Icon -->
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.97C16.638 1.97 14.162.943 11.543.943c-5.445 0-9.87 4.373-9.874 9.8.001 2.012.528 3.983 1.529 5.727L2.176 20.2l3.966-1.026c.168.093.336.183.505.28z"/>
+          </svg>
+          Chat WhatsApp Admin
+        </a>
+        
+        <a href="mailto:Lgkuuhaku@gmail.com" class="px-8 py-4 bg-slate-900 border border-slate-800 text-slate-300 font-bold rounded-xl hover:border-amber-500 hover:text-amber-500 transition-all flex items-center justify-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          Email Korporat
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FOOTER SECTION -->
+  <footer class="bg-slate-950 border-t border-slate-900 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-slate-900">
+        <!-- Brand Intro -->
+        <div class="space-y-4">
+          <a href="#home" class="flex items-center gap-2">
+            <svg class="w-7 h-7 text-amber-500 fill-current" viewBox="0 0 24 24">
+              <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+            </svg>
+            <span class="text-xl font-bold tracking-wider text-white">RYINO CINEMA</span>
+          </a>
+          <p class="text-slate-400 text-xs md:text-sm leading-relaxed">
+            Platform bioskop masa kini yang berkomitmen menghadirkan ragam pilihan film terluas serta kemudahan akses pemesanan tiket yang transparan bagi seluruh lapisan masyarakat Indonesia.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="space-y-4">
+          <h4 class="font-bold text-white text-sm tracking-wider uppercase">Quick Links</h4>
+          <ul class="space-y-2 text-xs md:text-sm text-slate-400">
+            <li><a href="#home" class="hover:text-amber-500 transition-colors">Home</a></li>
+            <li><a href="#now-showing-sec" class="hover:text-amber-500 transition-colors">Now Showing</a></li>
+            <li><a href="#about" class="hover:text-amber-500 transition-colors">About Brand</a></li>
+            <li><a href="#services" class="hover:text-amber-500 transition-colors">Customer Features</a></li>
+            <li><a href="#testimonials" class="hover:text-amber-500 transition-colors">Reviews</a></li>
+            <li><a href="#faq" class="hover:text-amber-500 transition-colors">FAQ Center</a></li>
+          </ul>
+        </div>
+
+        <!-- Studio Types -->
+        <div class="space-y-4">
+          <h4 class="font-bold text-white text-sm tracking-wider uppercase">Daftar Layanan</h4>
+          <ul class="space-y-2 text-xs md:text-sm text-slate-400">
+            <li><a href="#studios" class="hover:text-amber-500 transition-colors">Studio Reguler</a></li>
+            <li><a href="#studios" class="hover:text-amber-500 transition-colors">Studio Premium Prime</a></li>
+            <li><a href="#studios" class="hover:text-amber-500 transition-colors">Velvet Luxury Suite</a></li>
+            <li><a href="#studios" class="hover:text-amber-500 transition-colors">Private Cinema Rent</a></li>
+          </ul>
+        </div>
+
+        <!-- Corporate Address & Official WA -->
+        <div class="space-y-4 text-slate-400 text-xs md:text-sm">
+          <h4 class="font-bold text-white text-sm tracking-wider uppercase">Kontak Admin Resmi</h4>
+          <p class="leading-relaxed">
+            📍 Jl. Sinema Raya No. 45, Jakarta Pusat, Indonesia
+          </p>
+          <div class="space-y-1">
+            <p>💬 <span class="font-semibold text-white">WhatsApp:</span> <a href="https://api.whatsapp.com/send?phone=62895379272080&text=Halo%20Admin%20Ryino%20Cinema!" target="_blank" class="text-amber-500 hover:text-amber-400 transition-colors">+62 895-3792-72080</a></p>
+            <p>✉️ <span class="font-semibold text-white">Email:</span> <a href="mailto:Lgkuuhaku@gmail.com" class="text-amber-500 hover:text-amber-400 transition-colors">Lgkuuhaku@gmail.com</a></p>
+          </div>
+          
+          <!-- Social Icons -->
+          <div class="flex gap-4 pt-2">
+            <!-- FB -->
+            <a href="#" class="text-slate-500 hover:text-white transition-colors" aria-label="Facebook">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            </a>
+            <!-- IG -->
+            <a href="#" class="text-slate-500 hover:text-white transition-colors" aria-label="Instagram">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <!-- TikTok -->
+            <a href="#" class="text-slate-500 hover:text-white transition-colors" aria-label="TikTok">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.99-1.72-.08-.07-.17-.17-.25-.25v6.52c-.03 2.32-.84 4.67-2.58 6.22-1.89 1.75-4.68 2.37-7.14 1.74-2.61-.63-4.86-2.58-5.69-5.11-.99-2.93-.34-6.42 1.76-8.73 1.63-1.83 4.09-2.77 6.55-2.57.1.58.07 1.18.08 1.77-.04.09-.09.18-.15.26-1.57.48-3.08 1.69-3.48 3.34-.52 2.04.59 4.37 2.58 5.01 1.79.62 3.96-.06 4.93-1.68.42-.68.61-1.47.61-2.26v-14.85z"/></svg>
+            </a>
+            <!-- YT -->
+            <a href="#" class="text-slate-500 hover:text-white transition-colors" aria-label="YouTube">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.163c-.274-1.026-1.082-1.833-2.108-2.107C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.39.511C1.584 4.33.776 5.137.502 6.163.01 8.036 0 12 0 12s.01 3.964.492 5.837c.274 1.026 1.082 1.833 2.108 2.107C4.483 20.455 12 20.455 12 20.455s7.517 0 9.39-.511c1.026-.274 1.834-1.08 2.108-2.107.482-1.873.492-5.837.492-5.837s-.01-3.964-.492-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between pt-8 text-xs text-slate-500 gap-4">
+        <div>
+          &copy; 2026 Ryino Cinema. Hak Cipta Dilindungi Undang-Undang. Developed for Cinema Accessibility.
+        </div>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-slate-300">Privacy Policy</a>
+          <span>|</span>
+          <a href="#" class="hover:text-slate-300">Terms of Service</a>
+          <span>|</span>
+          <a href="#" class="hover:text-slate-300">Disclaimer Sistem Harga</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================= -->
+  <!-- BACK TO TOP BUTTON -->
+  <!-- ========================= -->
+  <button id="back-to-top" aria-label="Kembali ke atas" class="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30 opacity-0 translate-y-4 pointer-events-none transition-all duration-300" title="Kembali ke atas">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- ========================= -->
+  <!-- TOAST NOTIFICATION SYSTEM -->
+  <!-- ========================= -->
+  <div id="toast-container" class="fixed top-24 right-4 z-[100] flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- ========================= -->
+  <!-- TRAILER PREVIEW MODAL -->
+  <!-- ========================= -->
+  <div id="trailer-modal" class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="relative w-full max-w-3xl">
+      <button id="trailer-close" class="absolute -top-12 right-0 p-2 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all z-10" aria-label="Tutup Trailer">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      <div id="trailer-content" class="aspect-video w-full bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex flex-col items-center justify-center gap-6 p-8">
+        <div class="w-20 h-20 rounded-full bg-amber-500/10 border-2 border-amber-500/40 flex items-center justify-center">
+          <svg class="w-10 h-10 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+        <div class="text-center">
+          <h3 id="trailer-movie-title" class="text-xl font-bold text-white mb-2"></h3>
+          <p class="text-slate-400 text-sm">Trailer resmi akan tersedia segera. Pantau terus update terbaru di media sosial Ryino Cinema!</p>
+        </div>
+        <a href="https://www.youtube.com/@RyinoCinema" target="_blank" class="px-6 py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg transition-colors flex items-center gap-2 text-sm">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.163c-.274-1.026-1.082-1.833-2.108-2.107C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.39.511C1.584 4.33.776 5.137.502 6.163.01 8.036 0 12 0 12s.01 3.964.492 5.837c.274 1.026 1.082 1.833 2.108 2.107C4.483 20.455 12 20.455 12 20.455s7.517 0 9.39-.511c1.026-.274 1.834-1.08 2.108-2.107.482-1.873.492-5.837.492-5.837s-.01-3.964-.492-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          Tonton di YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+
+
+  <!-- Main JavaScript Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
